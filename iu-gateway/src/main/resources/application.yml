@@ -1,0 +1,64 @@
+logging:
+  config: classpath:logback-spring.xml
+
+
+server:
+  port: 8080
+
+
+spring:
+  application:
+    name: iu-gateway
+  profiles:
+    active:
+    - dev
+  redis:
+    timeout: 3s
+    ssl: false
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: iu-user-route
+        uri: lb://iu-user
+        predicates:
+        - Path=/user/**
+        filters:
+        - StripPrefix=1
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@myResolver}"
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/defaultFallback
+      - id: iu-external-route
+        uri: lb://iu-external
+        predicates:
+        - Path=/external/**
+        filters:
+        - StripPrefix=1
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@myResolver}"
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/defaultFallback
+
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+

@@ -1,0 +1,8 @@
+{
+	"properties": [
+		{
+			"name": "com.gaoc.base",
+			"type": "com.gaoc.gateway.properties.BaseProperties"
+		}
+	]
+}

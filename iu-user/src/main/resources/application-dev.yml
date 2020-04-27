@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    stream:      default-binder: rabbit
+      bindings:
+        sms-input:
+          group: sms-group
+        delay-input:
+          group: delay-group
+          destination: delay-topic
+        delay-output:
+          destination: delay-topic
+      rabbit:        bindings:
+          delay-input:
+            consumer:
+              delayed-exchange: true
+          delay-output:
+            producer:              delayed-exchange: true
+  redis:    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 16
+  datasource:
+    url: jdbc:mysql://localhost:3306/iu_user?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  rabbitmq:    connection-timeout: 5s
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+
+com:  gaoc:    user:      es:        url:        - 127.0.0.1:9200
+

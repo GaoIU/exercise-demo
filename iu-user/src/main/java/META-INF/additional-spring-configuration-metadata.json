@@ -1,0 +1,12 @@
+{
+	"properties": [
+		{
+			"name": "com.gaoc.base",
+			"type": "com.gaoc.core.properties.BaseProperties"
+		},
+		{
+			"name": "com.gaoc.user",
+			"type": "com.gaoc.user.properties.UserProperties"
+		}
+	]
+}

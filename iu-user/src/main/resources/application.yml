@@ -1,0 +1,79 @@
+logging:
+  config: classpath:logback-spring.xml
+
+
+server:
+  port: 8010
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: none
+  httpclient:
+    enabled: false
+    connection-timeout: 5000
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+      useGzipDecoder: true
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+
+spring:
+  application:
+    name: iu-user
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+  profiles:
+    active:
+    - dev
+  redis:
+    timeout: 3s
+    ssl: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-test-query: SELECT 1
+      connection-timeout: 30000
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  mapper-locations:
+    - classpath*:mapper/**/*Mapper.xml
+  type-aliases-package: com.gaoc.user.model
+  global-config:
+    db-config:
+      id-type: assign-id
+
